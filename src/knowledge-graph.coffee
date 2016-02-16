@@ -20,7 +20,6 @@ module.exports = (robot) ->
                 else
                   undefined
               ).then (rect) ->
-                console.log(rect)
                 if rect != null
                   page.property('clipRect',
                     top: rect.top,
