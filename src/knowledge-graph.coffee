@@ -4,6 +4,7 @@ fs = require 'fs'
 slackClient = require 'slack-client'
 
 USER_AGENT_STRING = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2650.0 Safari/537.36'
+GOOGLE_PAGE_LANG = process.env.GOOGLE_PAGE_LANG || 'en'
 
 module.exports = (robot) ->
   robot.hear /^\? (.+)/i, (res) ->
@@ -11,7 +12,7 @@ module.exports = (robot) ->
     phantom.create().then (ph) ->
       ph.createPage().then (page) ->
         page.setting('userAgent', USER_AGENT_STRING).then ->
-          page.open("https://www.google.com/search?q=#{encodeURIComponent res.match[1]}").then (status) ->
+          page.open("https://www.google.com/search?q=#{encodeURIComponent res.match[1]}&hl=#{GOOGLE_PAGE_LANG}").then (status) ->
             if status == 'success'
               page.evaluate(() ->
                 element = document.querySelector('div#cwmcwd') || document.querySelector('g-card div') || document.querySelector('.kp-blk') || document.querySelector('div.g div.rreh')|| document.querySelector('div#ires .card-section')
